@@ -1,3 +1,7 @@
+# Ignore the package directory and file used for lambda content upload
+package
+my_deployment_package.zip
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

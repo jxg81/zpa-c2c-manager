@@ -84,7 +84,7 @@ zpa: ZPA = ZPA(client_id=ZPA_CLIENT_ID, client_secret=ZPA_CLIENT_SECRET, custome
 
 def main():
     # Get flat lists of all devices from zcc with zpa on or zpa off profiles and format the names with the correct domain suffix
-    zpa_on_zcc_devices, zpa_off_zcc_devices: list = collect_zcc_data()
+    zpa_on_zcc_devices, zpa_off_zcc_devices= collect_zcc_data()
     
     # Chunk lists in to groups of 2000 or less
     zpa_on_zcc_devices_chunked: list = chunk_list(zpa_on_zcc_devices)
