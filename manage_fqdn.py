@@ -19,9 +19,12 @@ def chunk_list(lst: list, chunk_size: int = 2000) -> list:
         chunked_lists.append(chunk)
     return chunked_lists
 
-def collect_zcc_data() -> list:
+def collect_zcc_data(zcc: ZCC) -> list:
     """
     Get a list of all windows devices with ZPA ON profile and ZPA OFF profile
+    
+    Args:
+        zcc: ZCC AP Session Client
     """
     zcc_devices: Box = zcc.devices.list_devices(os_type='windows')
     zpa_on_zcc_devices = []
@@ -34,11 +37,12 @@ def collect_zcc_data() -> list:
             zpa_off_zcc_devices.append(f"{device.machine_hostname.lower()}{DOMAIN_SUFFIX}")
     return zpa_on_zcc_devices, zpa_off_zcc_devices
     
-def manage_zpa_segments(zpa_on_lists: list, zpa_off_lists: list) -> None:
+def manage_zpa_segments(zpa: ZPA, zpa_on_lists: list, zpa_off_lists: list) -> None:
     """
     Delete all existing c2c app segments and re-create with updated data
     
     Args:
+        zpa: ZPA AP Session Client
         zpa_on_lists: A list of lists with device host names to be routed via ZPA
         zpa_off_lists: A list of lists with device host names to be bypassed for ZPA
     """
@@ -78,20 +82,20 @@ def manage_zpa_segments(zpa_on_lists: list, zpa_off_lists: list) -> None:
                                      health_check_type = 'NONE',
                                      is_cname_enabled = True)
 
-# Setup session with ZCC and ZPA
-zcc: ZCC = ZCC(client_id=ZCC_CLIENT_ID, client_secret=ZCC_CLIENT_SECRET, cloud=ZCC_CLOUD, override_url=f"https://api-mobile.{ZCC_CLOUD}.net/papi")
-zpa: ZPA = ZPA(client_id=ZPA_CLIENT_ID, client_secret=ZPA_CLIENT_SECRET, customer_id=ZPA_CUSTOMER_ID)
-
-def main():
+def manage_segments():
+    # Setup session with ZCC and ZPA
+    zcc: ZCC = ZCC(client_id=ZCC_CLIENT_ID, client_secret=ZCC_CLIENT_SECRET, cloud=ZCC_CLOUD, override_url=f"https://api-mobile.{ZCC_CLOUD}.net/papi")
+    zpa: ZPA = ZPA(client_id=ZPA_CLIENT_ID, client_secret=ZPA_CLIENT_SECRET, customer_id=ZPA_CUSTOMER_ID)
+    
     # Get flat lists of all devices from zcc with zpa on or zpa off profiles and format the names with the correct domain suffix
-    zpa_on_zcc_devices, zpa_off_zcc_devices= collect_zcc_data()
+    zpa_on_zcc_devices, zpa_off_zcc_devices= collect_zcc_data(zcc)
     
     # Chunk lists in to groups of 2000 or less
     zpa_on_zcc_devices_chunked: list = chunk_list(zpa_on_zcc_devices)
     zpa_off_zcc_devices_chunked: list = chunk_list(zpa_off_zcc_devices)
     
     # Delete and recreate app_segments based on chunked device lists
-    manage_zpa_segments(zpa_on_zcc_devices_chunked, zpa_off_zcc_devices_chunked)
+    manage_zpa_segments(zpa, zpa_on_zcc_devices_chunked, zpa_off_zcc_devices_chunked)
 
 if __name__ == "__main__":
-    main()
+    manage_segments()

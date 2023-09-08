@@ -6,6 +6,10 @@ try:
 except ModuleNotFoundError:
     pass
 
+# Only required for collecting IP binding data as no API endpoint currently exists
+ZPA_USERNAME: str = getenv('ZPA_USERNAME')
+ZPA_PASSWORD: str = getenv('ZPA_PASSWORD')
+
 # API Auth data for ZPA tenant
 ZPA_CLIENT_ID: str = getenv('ZPA_CLIENT_ID')
 ZPA_CLIENT_SECRET: str = getenv('ZPA_CLIENT_SECRET')
