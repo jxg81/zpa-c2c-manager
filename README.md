@@ -6,13 +6,13 @@ A collection of tools for managing name resolution and forwarding rules on ZPA i
 > These utilities are not affiliated with, nor supported by Zscaler in any way.
 ----
 # Client-to-Client Segment Management
-`manage_fqdn.py`
+Script name: `manage_fqdn.py`
 
 Allocate client device fqdns to app segments to manage client-to-client forwarding during migration to ZPA.
 
 This script interrogates the Zscaler Client Connector registered devices and retrieves the mapping of device names to app profiles. Based on the assigned app profile the device will be allocated to an appropriate ZPA app segment to either enable or disable ZPA forwarding for client-to-client connections.
 
-The following environment variables are required.
+The following environment variables are required:
 
 ### **ZPA_CLIENT_ID**
 
@@ -82,10 +82,13 @@ Don't Do This:
 The script has been designed to support packaging and deployment to AWS Lambda. Run the supplied bash script `package_lambda_function.sh` to download and package the script and dependencies into a Lambda deployable package named `lambda_package.zip`. The script is designed to run on unix/osx systems and should be executed from the root of the repo store. When deployed a `cron`, `rate` or other suitable trigger can be used to schedule execution.
 
 # Client-to-Server Name Resolution
-`zpa_host_file_update.py`
+script name: `zpa_host_file_update.py`
 
 > [!WARNING]
 > This script utilises functionality that is not currently exposed via official Zscaler API's
+
+> [!IMPORTANT]  
+> Execution of this script will require administrative privileges.
 
 > [!NOTE]
 > This functionality requires the use of [Zscaler Branch Connector and/or Zscaler Cloud Connector](https://help.zscaler.com/zpa/understanding-server-client-connectivity)
@@ -94,4 +97,15 @@ This script is designed to be run locally on winodws, osx and unix platforms to 
 
 The script includes various command line options to control execution which can be viewed via `zpa_host_file_update.py - h`
 
-It is intended that the script would be scheduled to run on a daily (or more frequent) basis.
+It is intended that the script would be scheduled to run on a daily (or as desired) basis.
+
+The following environment variables are required:
+
+### **ZPA_USERNAME**
+
+ZPA admin user with sufficient administrative rights to download [ZPA client IP bindings](https://help.zscaler.com/zpa/about-ip-bindings)
+
+### **ZPA_PASSWORD**
+
+Admin user password
+
