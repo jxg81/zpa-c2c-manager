@@ -12,14 +12,17 @@ def get_platform():
     UNIX = '/etc/hosts'
     if sys_type == 'Darwin':
         print(f'Mac OS detected\nWriting host entries to {DARWIN}')
-        result = DARWIN
+        path = DARWIN
+        default_entries=[{'IP': '127.0.0.1', 'Name': 'localhost'}, {'IP': '::1', 'Name': 'localhost'}, {'IP': '255.255.255.255', 'Name': 'broadcasthost'}]
     elif sys_type == 'Windows':
         print(f'Windows detected\nWriting host entries to {WINDOWS}')
-        result = WINDOWS
+        path = WINDOWS
+        default_entries=None
     else:
         print(f'Nix detected\nWriting host entries to {UNIX}')
-        result = UNIX
-    return result
+        path = UNIX
+        default_entries=[{'IP': '127.0.0.1', 'Name': 'localhost'}, {'IP': '::1', 'Name': 'localhost'}]
+    return path, default_entries
     
 def process_add_hosts(csv_file):
     with open(csv_file, newline='') as f:
@@ -51,21 +54,29 @@ def get_ip_bindings(customer_id, auth_token):
     result=list(csv.DictReader(csv_response.text.splitlines(), delimiter=',',quotechar='"'))
     return result
 
-def write_hosts_file(ip_bindings: dict, file_path: str, add_hosts: dict=None):
+def write_hosts_file(ip_bindings: dict, file_path: str, default_entries, add_hosts: dict=None):
     with open(file_path, 'w+') as f:
-        for binding in ip_bindings:
-            f.write(f'{binding["Zscaler IP"]}\t{binding["Client Hostname"]}\r\n')
+        if ip_bindings:
+            for binding in ip_bindings:
+                f.write(f'{binding["Zscaler IP"]}\t{binding["Client Hostname"]}\r\n')
         if add_hosts:
             for host in add_hosts:
                 f.write(f'{host["IP"]}\t{host["Name"]}\r\n')
+        if default_entries:
+            for entry in default_entries:
+                f.write(f'{entry["IP"]}\t{entry["Name"]}\r\n')
 
 def manage_hosts_file(override_file=None, add_hosts=None):
     if override_file:
         file_path = override_file
     else:
-        file_path = get_platform()
+        file_path, default_entries = get_platform()
     customer_id, auth_token = zpa_login()
     ip_bindings = get_ip_bindings(customer_id, auth_token)
     if add_hosts:
         add_hosts=process_add_hosts(add_hosts)
-    write_hosts_file(ip_bindings, file_path, add_hosts=add_hosts)
+    write_hosts_file(ip_bindings, file_path, default_entries, add_hosts=add_hosts)
+    
+def restore_platform_defaults():
+    file_path, default_entries = get_platform()
+    write_hosts_file(None, file_path, default_entries, add_hosts=None)
