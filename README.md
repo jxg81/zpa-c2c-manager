@@ -94,6 +94,8 @@ script name: `zpa_host_file_update.py`
 > [!NOTE]
 > This functionality requires the use of [Zscaler Branch Connector and/or Zscaler Cloud Connector](https://help.zscaler.com/zpa/understanding-server-client-connectivity)
 
+Create local hostname mappings to enable DNS resolution of ZPA Server-to-Client mappings.
+
 This script is designed to be run locally on winodws, osx and unix platforms to update the local **hosts** file with current [ZPA IP Bindings](https://help.zscaler.com/zpa/about-ip-bindings).
 
 The script includes various command line options to control execution which can be viewed via `zpa_host_file_update.py - h`
