@@ -78,6 +78,7 @@ Don't Do This:
 *DOMAIN_SUFFIX=example.com*
 
 ### Packaging for AWS Lambda
+Script name: `package_lambda_function.sh`
 
 The script has been designed to support packaging and deployment to AWS Lambda. Run the supplied bash script `package_lambda_function.sh` to download and package the script and dependencies into a Lambda deployable package named `lambda_package.zip`. The script is designed to run on unix/osx systems and should be executed from the root of the repo store. When deployed a `cron`, `rate` or other suitable trigger can be used to schedule execution.
 
