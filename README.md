@@ -127,7 +127,7 @@ pip install pyinstaller
 **Clone Repo**
 
 ```
-git clone git clone https://github.com/jxg81/zpa-c2c-manager
+git clone https://github.com/jxg81/zpa-c2c-manager
 ```
 
 **Change to Repo Root and Execute PyInstaller**
