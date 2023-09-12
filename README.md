@@ -112,3 +112,30 @@ ZPA admin user with sufficient administrative rights to download [ZPA client IP 
 
 Admin user password
 
+### Packaging with [PyInstaller](https://pyinstaller.org/)
+
+If required the script can be packaged using PyInstaller to enable running on hosts that do not have python installed locally. PyInstaller will need to be run on the target platform type to generate the single file executable for that platform type.
+
+Quick guide to using PyInstaller - refer to PyInstaller documentation for additional help.
+
+**Install PyInstaller**
+
+```
+pip install pyinstaller
+```
+
+**Clone Repo**
+
+```
+git clone git clone https://github.com/jxg81/zpa-c2c-manager
+```
+
+**Change to Repo Root and Execute PyInstaller**
+
+```
+cd zpa-c2c-manager
+pyinstaller -F zpa_host_file_update.py
+```
+**Copy File to Required Host and Execute**
+
+The -F option used in the previous step will create a single file executable named `zpa_host_file_update` in `../dist` that can be distributed to hosts that require updates to their local host file inline with the IP bindings on the ZPA portal. You will need to set the ZPA_USERNAME and ZPA_PASSWORD environment variables on each host that executes the script to allow the host to read from the ZPA admin portal.
