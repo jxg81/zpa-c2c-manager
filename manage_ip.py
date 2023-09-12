@@ -69,6 +69,7 @@ def write_hosts_file(ip_bindings: dict, file_path: str, default_entries, add_hos
 def manage_hosts_file(override_file=None, add_hosts=None):
     if override_file:
         file_path = override_file
+        default_entries = None
     else:
         file_path, default_entries = get_platform()
     customer_id, auth_token = zpa_login()
