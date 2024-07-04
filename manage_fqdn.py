@@ -35,8 +35,9 @@ def collect_zcc_data(zcc: ZCC) -> list:
     for device in zcc_devices:
         if device.policy_name == CLIENT_ZPA_ON_PROFILE_NAME and device.registration_state != 'Removed':
             zpa_on_zcc_devices.append(f"{device.machine_hostname.lower()}{DOMAIN_SUFFIX}")
-        if device.policy_name == CLIENT_ZPA_OFF_PROFILE_NAME and device.registration_state != 'Removed':
-            zpa_off_zcc_devices.append(f"{device.machine_hostname.lower()}{DOMAIN_SUFFIX}")
+        if CREATE_OFF_SEGMENTS:
+            if device.policy_name == CLIENT_ZPA_OFF_PROFILE_NAME and device.registration_state != 'Removed':
+                zpa_off_zcc_devices.append(f"{device.machine_hostname.lower()}{DOMAIN_SUFFIX}")
     return zpa_on_zcc_devices, zpa_off_zcc_devices
 
 def collect_zcc_data_download_devices(zcc: ZCC) -> list:
@@ -63,8 +64,9 @@ def collect_zcc_data_download_devices(zcc: ZCC) -> list:
     for device in zcc_devices:
         if device.policy_name == CLIENT_ZPA_ON_PROFILE_NAME and device.registration_state != 'Removed':
             zpa_on_zcc_devices.append(f"{device.machine_hostname.lower()}{DOMAIN_SUFFIX}")
-        if device.policy_name == CLIENT_ZPA_OFF_PROFILE_NAME and device.registration_state != 'Removed':
-            zpa_off_zcc_devices.append(f"{device.machine_hostname.lower()}{DOMAIN_SUFFIX}")
+        if CREATE_OFF_SEGMENTS:
+            if device.policy_name == CLIENT_ZPA_OFF_PROFILE_NAME and device.registration_state != 'Removed':
+                zpa_off_zcc_devices.append(f"{device.machine_hostname.lower()}{DOMAIN_SUFFIX}")
     return zpa_on_zcc_devices, zpa_off_zcc_devices
     
 def manage_zpa_segments(zpa: ZPA, zpa_on_lists: list, zpa_off_lists: list) -> None:
@@ -82,7 +84,8 @@ def manage_zpa_segments(zpa: ZPA, zpa_on_lists: list, zpa_off_lists: list) -> No
     # Grab existing c2c app segments from ZPA
     app_segments: Box = zpa.app_segments.list_segments()
     zpa_on_segments: list = [segment for segment in app_segments if segment.name[0:len(CLIENT_ZPA_ON_SEGMENT_NAME_PREFIX)] == CLIENT_ZPA_ON_SEGMENT_NAME_PREFIX]
-    zpa_off_segments: list = [segment for segment in app_segments if segment.name[0:len(CLIENT_ZPA_OFF_SEGMENT_NAME_PREFIX)] == CLIENT_ZPA_OFF_SEGMENT_NAME_PREFIX]
+    if CREATE_OFF_SEGMENTS:
+        zpa_off_segments: list = [segment for segment in app_segments if segment.name[0:len(CLIENT_ZPA_OFF_SEGMENT_NAME_PREFIX)] == CLIENT_ZPA_OFF_SEGMENT_NAME_PREFIX]
     
     # delete existing c2c segment groups
     for segment in zpa_on_segments:
