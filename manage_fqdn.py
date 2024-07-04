@@ -38,6 +38,11 @@ def collect_zcc_data(zcc: ZCC) -> list:
         if CREATE_OFF_SEGMENTS:
             if device.policy_name == CLIENT_ZPA_OFF_PROFILE_NAME and device.registration_state != 'Removed':
                 zpa_off_zcc_devices.append(f"{device.machine_hostname.lower()}{DOMAIN_SUFFIX}")
+                
+    # Remove duplicates from zpa on and zpa off lists
+    zpa_on_zcc_devices = list(set(zpa_on_zcc_devices))
+    zpa_off_zcc_devices = list(set(zpa_off_zcc_devices))
+    
     return zpa_on_zcc_devices, zpa_off_zcc_devices
 
 def collect_zcc_data_download_devices(zcc: ZCC) -> list:
