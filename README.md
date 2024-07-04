@@ -65,6 +65,12 @@ ZCC App Profile name assigned to users where ZPA forwarding will be *ENABLED*.
 
 ZCC App Profile name assigned to users where ZPA forwarding will be *DISABLED*.
 
+### **CREATE_OFF_SEGMENTS**
+
+True/False
+
+Set to FALSE if you do not want to create the ZPA Off segments in ZPA. Defaults to True
+
 ### **DOMAIN_SUFFIX**
 
 ZCC devices are returned without a domain suffix. Set this value to add a common domain suffix to all devices. Suffix should include a leading dot.
@@ -76,6 +82,12 @@ Do This:
 Don't Do This:
 
 *DOMAIN_SUFFIX=example.com*
+
+### **DOWNLOAD_DEVICES**
+
+True/False
+
+Set this value to True to utilise the Download devices API endpoint rather than the list devices endpoint. Note that this endpoint is not utilised by default as it is heavily rate limited - only 3 requests per day.
 
 ### Packaging for AWS Lambda
 Script name: `package_lambda_function.sh`
@@ -111,6 +123,10 @@ ZPA admin user with sufficient administrative rights to download [ZPA client IP 
 ### **ZPA_PASSWORD**
 
 Admin user password
+
+### **SLEEP_TIME**
+
+Set a delay between API calls for API rate limiting control
 
 ### Packaging with [PyInstaller](https://pyinstaller.org/)
 

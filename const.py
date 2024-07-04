@@ -33,3 +33,12 @@ CLIENT_ZPA_OFF_PROFILE_NAME: str = getenv('CLIENT_ZPA_OFF_PROFILE_NAME')
 
 # Domain name suffix to be added to the host names retrieved from ZCC
 DOMAIN_SUFFIX: str = getenv('DOMAIN_SUFFIX')
+
+# Sleep interval in seconds
+SLEEP_TIME: float = float(getenv('SLEEP_TIME'))
+
+# Disable Management of ZPA OFF Segments
+CREATE_OFF_SEGMENTS: bool = bool(getenv('CREATE_OFF_SEGMENTS', default=True))
+
+#Use the Download Devices API instead of the List Devices API
+DOWNLOAD_DEVICES: bool = bool(getenv('DOWNLOAD_DEVICES', default=False))
