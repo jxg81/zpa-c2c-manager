@@ -28,7 +28,7 @@ def collect_zcc_data(zcc: ZCC) -> list:
     Args:
         zcc: ZCC AP Session Client
     """
-    zcc_devices: Box = zcc.devices.list_devices(os_types='windows',page_size=5000)
+    zcc_devices: Box = zcc.devices.list_devices(os_type='windows', page_size=5000)
     zpa_on_zcc_devices = []
     zpa_off_zcc_devices = []
     
