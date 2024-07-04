@@ -23,12 +23,12 @@ def chunk_list(lst: list, chunk_size: int = 2000) -> list:
 
 def collect_zcc_data(zcc: ZCC) -> list:
     """
-    Get a list of all devices with ZPA ON profile and ZPA OFF profile
+    Get a list of all windows devices with ZPA ON profile and ZPA OFF profile
     
     Args:
         zcc: ZCC AP Session Client
     """
-    zcc_devices: Box = zcc.devices.list_devices(page_size=5000)
+    zcc_devices: Box = zcc.devices.list_devices(os_types='windows',page_size=5000)
     zpa_on_zcc_devices = []
     zpa_off_zcc_devices = []
     
@@ -41,7 +41,7 @@ def collect_zcc_data(zcc: ZCC) -> list:
 
 def collect_zcc_data_download_devices(zcc: ZCC) -> list:
     """
-    Alternate method to list of all devices with ZPA ON profile and ZPA OFF profile
+    Alternate method to list of all windows devices with ZPA ON profile and ZPA OFF profile
     
     This method uses the 'downloadDevices' API to download the full list of devices which is heavily rate limited by Zscaler
     MAX 3 CALLS PER DAY
@@ -49,7 +49,7 @@ def collect_zcc_data_download_devices(zcc: ZCC) -> list:
     Args:
         zcc: ZCC AP Session Client
     """
-    zcc.devices.download_devices(filename='zcc-devices.csv')
+    zcc.devices.download_devices(os_types=['windows'], filename='zcc-devices.csv')
     
     with open('zcc-devices.csv', 'r') as file:
         data = file.read()
