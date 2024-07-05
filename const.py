@@ -38,7 +38,7 @@ DOMAIN_SUFFIX: str = getenv('DOMAIN_SUFFIX')
 SLEEP_TIME: float = float(getenv('SLEEP_TIME'))
 
 # Disable Management of ZPA OFF Segments
-CREATE_OFF_SEGMENTS: bool = bool(getenv('CREATE_OFF_SEGMENTS', default=True))
+CREATE_OFF_SEGMENTS: bool = eval(getenv('CREATE_OFF_SEGMENTS', default='True'))
 
 #Use the Download Devices API instead of the List Devices API
-DOWNLOAD_DEVICES: bool = bool(getenv('DOWNLOAD_DEVICES', default=False))
+DOWNLOAD_DEVICES: bool = eval(getenv('DOWNLOAD_DEVICES', default='False'))
